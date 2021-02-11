@@ -1,6 +1,7 @@
 #include "Converter.h"
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 ChunkList Converter::chunkConverter(vector<uint8_t> data){

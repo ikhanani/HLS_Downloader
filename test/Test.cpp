@@ -7,7 +7,7 @@
 #include <cpprest/interopstream.h>
 #include <sstream>
 #include <vector>
-#include "../src/config.h"
+#include "../src/Config.h"
 
 
 TEST(ChunkTest, chunk){
