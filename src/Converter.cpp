@@ -4,8 +4,8 @@
 #include <algorithm>
 using namespace std;
 
-ChunkList Converter::chunkConverter(vector<uint8_t> data){
-    ChunkList chunk;
+unique_ptr<ChunkList> Converter::chunkConverter(vector<uint8_t> data){
+    unique_ptr<ChunkList> chunk = make_unique<ChunkList>();
     string str(data.begin(), data.end());
     istringstream stream(str);
     string line;
@@ -14,7 +14,7 @@ ChunkList Converter::chunkConverter(vector<uint8_t> data){
     string value;
     while (getline(stream, line)){
         if(line.find(ver) != -1){
-            chunk.setVersion(stoi(line.substr(line.find(ver)+15)));
+            chunk->setVersion(stoi(line.substr(line.find(ver)+15)));
         }
         if(line.find("#EXT-X-STREAM-INF") != -1){
             linecopy = line;
@@ -25,28 +25,28 @@ ChunkList Converter::chunkConverter(vector<uint8_t> data){
             istringstream linestream(linecopy);
             while (linestream >> key >> value){
                 if(key == band){
-                    chunk.setBandwidth(stoi(value));
+                    chunk->setBandwidth(stoi(value));
                     cout << value << "\n";
                 }
                 if(key == codec){
-                    chunk.setCodecs(value.substr(0, value.length()));
+                    chunk->setCodecs(value.substr(0, value.length()));
                 }
                 if(key == res){
-                    chunk.setResolution(value);
+                    chunk->setResolution(value);
                 }
             }
 
         }
         if(line.find("chunklist")!=-1){
-            chunk.setChunkName(line);
+            chunk->setChunkName(line);
         }
     }
     return chunk;
 
 
 }
-PlayList Converter::playListConverter(vector<uint8_t> data){
-    PlayList play;
+unique_ptr<PlayList> Converter::playListConverter(vector<uint8_t> data){
+    unique_ptr<PlayList> play = make_unique<PlayList>();
     string str(data.begin(), data.end());
     istringstream stream(str);
     string line;
@@ -54,23 +54,23 @@ PlayList Converter::playListConverter(vector<uint8_t> data){
     bool readingFile = false;
     while (getline(stream, line)){
         if(line.find(ver) != -1){
-            play.setVersion(stoi(line.substr(line.find(ver)+15)));
+            play->setVersion(stoi(line.substr(line.find(ver)+15)));
         }
         if(line.find(cache)!=-1){
-            play.setAllowCache(line.find("NO")==-1);
+            play->setAllowCache(line.find("NO")==-1);
         }
         if(line.find(target)!=-1){
-            play.setTargetDuration(stoi(line.substr(line.find(target)+22)));
+            play->setTargetDuration(stoi(line.substr(line.find(target)+22)));
         }
         if(line.find(media)!=-1){
-            play.setMediaSequence(stoi(line.substr(line.find(media)+22)));
+            play->setMediaSequence(stoi(line.substr(line.find(media)+22)));
         }
         if(readingFile){
             MediaFile temp;
             temp.setDuration(tempDur);
             temp.setName(line);
             readingFile = false;
-            play.add(temp);
+            play->add(temp);
         }
         if(line.find(dur)!=-1){
             tempDur = stod(line.substr(8, line.length()));

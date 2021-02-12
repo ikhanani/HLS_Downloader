@@ -14,12 +14,12 @@ TEST(ChunkTest, chunk){
     string content = "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-STREAM-INF:BANDWIDTH=440283,CODECS= avc1.77.20 ,RESOLUTION=352x240\nchunklist_w1215933555.m3u8";
     Converter c;
     vector<uint8_t> vec(content.begin(), content.end());
-    ChunkList test = c.chunkConverter(vec);
-    ASSERT_EQ(test.getVersion(), 3);
-    ASSERT_EQ(test.getBandwidth(), 440283);
-    ASSERT_EQ(test.getCodecs(),"avc1.77.20");
-    ASSERT_EQ(test.getResolution(), "352x240");
-    ASSERT_EQ(test.getChunkName(), "chunklist_w1215933555.m3u8");
+    std::unique_ptr<ChunkList> test = c.chunkConverter(vec);
+    ASSERT_EQ(test->getVersion(), 3);
+    ASSERT_EQ(test->getBandwidth(), 440283);
+    ASSERT_EQ(test->getCodecs(),"avc1.77.20");
+    ASSERT_EQ(test->getResolution(), "352x240");
+    ASSERT_EQ(test->getChunkName(), "chunklist_w1215933555.m3u8");
     
 
 
@@ -28,12 +28,12 @@ TEST(PlayTest, play){
   string content = "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-ALLOW-CACHE:NO\n#EXT-X-TARGETDURATION:11\n#EXT-X-MEDIA-SEQUENCE:1010\n#EXTINF:10.01,\nmedia_w604857604_1010.ts\n#EXTINF:10.01,\nmedia_w604857604_1011.ts";
   Converter c;
   vector<uint8_t> vec(content.begin(), content.end());
-  PlayList test = c.playListConverter(vec);
-  ASSERT_EQ(test.getVersion(), 3);
-  ASSERT_EQ(test.getAllowCache(), false);
-  ASSERT_EQ(test.getTargetDuration(), 11);
-  ASSERT_EQ(test.getMediaSequence(), 1010);
-  vector<MediaFile> files = test.getFiles();
+  std::unique_ptr<PlayList> test = c.playListConverter(vec);
+  ASSERT_EQ(test->getVersion(), 3);
+  ASSERT_EQ(test->getAllowCache(), false);
+  ASSERT_EQ(test->getTargetDuration(), 11);
+  ASSERT_EQ(test->getMediaSequence(), 1010);
+  vector<MediaFile> files = test->getFiles();
   ASSERT_EQ(files.size(), 2);
   ASSERT_EQ(files[0].getName(), "media_w604857604_1010.ts");
   ASSERT_EQ(files[0].getDuration(), 10.01);

@@ -3,11 +3,12 @@
 #include <string>
 #include "HLSObjects.h"
 #include <vector>
+#include <memory>
 using namespace std;
 class Converter{
     public:
-        ChunkList chunkConverter(vector<uint8_t> data);
-        PlayList playListConverter(vector<uint8_t> data);
+        unique_ptr<ChunkList> chunkConverter(vector<uint8_t> data);
+        unique_ptr<PlayList> playListConverter(vector<uint8_t> data);
     private:
         const string ver = "#EXT-X-VERSION:";
         const string band = "BANDWIDTH";
