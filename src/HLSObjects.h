@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 using namespace std;
 
 class MediaFile;
@@ -36,11 +37,11 @@ class PlayList{
         void setAllowCache(bool a){allowCache = a;}
         void setTargetDuration(int t){targetDuration = t;}
         void setMediaSequence(int m){mediaSequence = m;}
-        vector<MediaFile> getFiles(){return files;}
-        void add(MediaFile mediaF);
+        vector<unique_ptr<MediaFile>> getFiles(){return std::move(files);}
+        void add(unique_ptr<MediaFile> mediaF);
        
     private:
-        vector<MediaFile> files;
+        vector<unique_ptr<MediaFile>> files;
         int version;
         bool allowCache;
         int targetDuration;

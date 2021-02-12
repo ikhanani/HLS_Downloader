@@ -66,11 +66,11 @@ unique_ptr<PlayList> Converter::playListConverter(vector<uint8_t> data){
             play->setMediaSequence(stoi(line.substr(line.find(media)+22)));
         }
         if(readingFile){
-            MediaFile temp;
-            temp.setDuration(tempDur);
-            temp.setName(line);
+            unique_ptr<MediaFile> temp = make_unique<MediaFile>();
+            temp->setDuration(tempDur);
+            temp->setName(line);
             readingFile = false;
-            play->add(temp);
+            play->add(std::move(temp));
         }
         if(line.find(dur)!=-1){
             tempDur = stod(line.substr(8, line.length()));

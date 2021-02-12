@@ -21,10 +21,15 @@ int main(){
     concurrency::streams::ostream outfile2(buffer2);
     fetcher.fetch(&outfile2, URL + "/" + chunk->getChunkName());
     unique_ptr<PlayList> play = c.playListConverter(buffer2.collection());
-    for(MediaFile i:play->getFiles()){
-        ofstream* outfile = new std::ofstream(i.getName(), ofstream::binary);
+    /**for(unique_ptr<MediaFile> i:play->getFiles()){
+        ofstream* outfile = new std::ofstream(i->getName(), ofstream::binary);
         stdio_ostream<unsigned char>* output_stream = new stdio_ostream<unsigned char> (*outfile);
-        fetcher.fetch(output_stream, URL + "/" + i.getName());
+        fetcher.fetch(output_stream, URL + "/" + i->getName());
+    } **/
+    for(int i = 0; i < play->getFiles().size(); i++){
+        ofstream* outfile = new std::ofstream(play->getFiles()[i]->getName(), ofstream::binary);
+        stdio_ostream<unsigned char>* output_stream = new stdio_ostream<unsigned char> (*outfile);
+        fetcher.fetch(output_stream, URL + "/" + play->getFiles()[i]->getName());
     }
     
 
