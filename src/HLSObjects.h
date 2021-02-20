@@ -37,11 +37,11 @@ class PlayList{
         void setAllowCache(bool a){allowCache = a;}
         void setTargetDuration(int t){targetDuration = t;}
         void setMediaSequence(int m){mediaSequence = m;}
-        vector<unique_ptr<MediaFile>> getFiles(){return std::move(files);}
-        void add(unique_ptr<MediaFile> mediaF);
+        vector<shared_ptr<MediaFile>> getFiles(){return files;}
+        void add(shared_ptr<MediaFile> mediaF);
        
     private:
-        vector<unique_ptr<MediaFile>> files;
+        vector<shared_ptr<MediaFile>> files;
         int version;
         bool allowCache;
         int targetDuration;

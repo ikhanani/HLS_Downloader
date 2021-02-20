@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace web;
 using namespace utility;
-
+using namespace hls;
 
 void Config::read(string str){
     stringstream_t s(str);

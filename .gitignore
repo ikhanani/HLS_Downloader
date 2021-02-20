@@ -12,3 +12,5 @@ CTestTestfile.cmake
 _deps
 bin/
 lib/
+.DS_Store
+

@@ -2,6 +2,7 @@
 #include <vector>
 #include "cpprest/json.h"
 using namespace std;
+namespace hls{
 class Config{
     public:
         void read(string str);
@@ -21,3 +22,4 @@ class Config{
 
 
 };
+}

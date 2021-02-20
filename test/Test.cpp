@@ -33,7 +33,7 @@ TEST(PlayTest, play){
   ASSERT_EQ(test->getAllowCache(), false);
   ASSERT_EQ(test->getTargetDuration(), 11);
   ASSERT_EQ(test->getMediaSequence(), 1010);
-  vector<std::unique_ptr<MediaFile>> files = test->getFiles();
+  vector<std::shared_ptr<MediaFile>> files = test->getFiles();
   ASSERT_EQ(files.size(), 2);
   ASSERT_EQ(files[0]->getName(), "media_w604857604_1010.ts");
   ASSERT_EQ(files[0]->getDuration(), 10.01);

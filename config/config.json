@@ -1,9 +1,9 @@
 {
     "enableLocal" : true,
     "baseDir" : "/tmp",
-    "urls" : ["https://itsvideo.arlingtonva.us:8013/live/cam257.stream", 
-        "https://itsvideo.arlingtonva.us:8013/live/cam258.stream", 
-        "https://itsvideo.arlingtonva.us:8013/live/cam259.stream"]
+    "urls" : ["https://itsvideo.arlingtonva.us:8013/live/cam257.stream/playlist.m3u8", 
+        "https://itsvideo.arlingtonva.us:8013/live/cam258.stream/playlist.m3u8", 
+        "https://itsvideo.arlingtonva.us:8013/live/cam259.stream/playlist.m3u8"]
 
 
 }
