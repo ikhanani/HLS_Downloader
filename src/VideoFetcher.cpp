@@ -1,7 +1,4 @@
 #include "VideoFetcher.h"
-using namespace web::http::client;
-using namespace web::http;
-using namespace web;
 #include <iostream>
 
 VideoFetcher::VideoFetcher(string baseUrl, string playListPath){
@@ -9,11 +6,21 @@ VideoFetcher::VideoFetcher(string baseUrl, string playListPath){
     this->playListPath = playListPath;
 
 }
+unique_ptr<PlayList> VideoFetcher::fetchPlayList(){
+    ostringstream out;
+    VideoFetcher fetcher = VideoFetcher(baseUrl, playListPath);
+    fetcher.fetch(out, baseUrl + "/" + playListPath);
+    Converter c;
+    unique_ptr<ChunkList> chunk = c.chunkConverter(out.str());
+    ostringstream out2;
+    fetcher.fetch(out2, baseUrl + "/" + chunk->getChunkName());
+    unique_ptr<PlayList> play = c.playListConverter(out2.str());
+    return play;
+}
 
-void VideoFetcher::fetch(concurrency::streams::ostream *outputStream, string targetUrl)
+void VideoFetcher::fetch(std::ostream& outputStream, string targetUrl)
 {
-    //http_client client(U("https://itsvideo.arlingtonva.us:8013/live/cam257.stream"));
-    http_client client(targetUrl);
+   /** http_client client(targetUrl);
     auto callBack = [=](http_response response) {
         std::cout << "Received response status code: " << response.status_code() << "\n";
         if (response.status_code() != 200)
@@ -33,6 +40,24 @@ void VideoFetcher::fetch(concurrency::streams::ostream *outputStream, string tar
     catch (web::http::http_exception &e)
     {
         cout << "HTTP Exception: " << e.what() << "Error code: " << e.error_code() << "\n";
+    }**/
+
+    URI uri(targetUrl);
+    HTTPClientSession* session;
+
+    if(targetUrl.find("https")!=-1){
+        session = new HTTPSClientSession(uri.getHost(), uri.getPort());
+        //HTTPSClientSession session(uri.getHost(), uri.getPort());
     }
+    else{
+        session = new HTTPClientSession(uri.getHost(), uri.getPort());
+    }
+    HTTPRequest request(HTTPRequest::HTTP_GET, targetUrl, HTTPMessage::HTTP_1_1);
+    HTTPResponse response;
+    session->sendRequest(request);
+	std::istream& rs = session->receiveResponse(response);
+	std::cout << response.getStatus() << " " << response.getReason() << std::endl;
+    StreamCopier::copyStream(rs, outputStream);
+    delete session;
 }
 

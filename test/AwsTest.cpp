@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 using namespace boost::uuids;
 
-TEST(S3Test, putObjectTest){
+/**TEST(S3Test, putObjectTest){
     S3Persister s("hls-dataset", "us-east-1");
     uuid id = random_generator()();
     stringstream idStr;
@@ -13,7 +13,7 @@ TEST(S3Test, putObjectTest){
     uuid filename = random_generator()();
     stringstream fileStr;
     fileStr << filename;
-    ofstream out(fileStr.str());
+    std::ofstream out(fileStr.str());
     out << "This is a test";
     out.close();
     Aws::SDKOptions options;
@@ -21,4 +21,4 @@ TEST(S3Test, putObjectTest){
     s.upload(idStr.str(), fileStr.str());
     Aws::ShutdownAPI(options);
 
-}
+}**/

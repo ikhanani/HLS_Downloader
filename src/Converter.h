@@ -7,8 +7,8 @@
 using namespace std;
 class Converter{
     public:
-        unique_ptr<ChunkList> chunkConverter(vector<uint8_t> data);
-        unique_ptr<PlayList> playListConverter(vector<uint8_t> data);
+        unique_ptr<ChunkList> chunkConverter(string str);
+        unique_ptr<PlayList> playListConverter(string str);
     private:
         const string ver = "#EXT-X-VERSION:";
         const string band = "BANDWIDTH";

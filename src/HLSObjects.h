@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <sstream>
+#include <boost/filesystem.hpp>
 using namespace std;
 
 class MediaFile;
@@ -53,11 +55,16 @@ class MediaFile{
     public:
         double getDuration(){return duration;}
         string getName(){return name;}
+        string getFullUrl(){return fullUrl;}
         void setDuration(double d){duration = d;}
         void setName(string n){name = n;}
+        void setFullUrl(string u){fullUrl = u;}
+        boost::filesystem::path getPath(string s);
+
     private:
         double duration;
         string name;
+        string fullUrl;
 };
 
 #endif

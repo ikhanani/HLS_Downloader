@@ -4,9 +4,9 @@
 #include <algorithm>
 using namespace std;
 
-unique_ptr<ChunkList> Converter::chunkConverter(vector<uint8_t> data){
+unique_ptr<ChunkList> Converter::chunkConverter(string str){
     unique_ptr<ChunkList> chunk = make_unique<ChunkList>();
-    string str(data.begin(), data.end());
+    //string str(data.begin(), data.end());
     istringstream stream(str);
     string line;
     string linecopy;
@@ -37,7 +37,7 @@ unique_ptr<ChunkList> Converter::chunkConverter(vector<uint8_t> data){
             }
 
         }
-        if(line.find("chunklist")!=-1){
+        if(line.find("chunklist")!=-1 || line.find("step")!=-1){
             chunk->setChunkName(line);
         }
     }
@@ -45,9 +45,9 @@ unique_ptr<ChunkList> Converter::chunkConverter(vector<uint8_t> data){
 
 
 }
-unique_ptr<PlayList> Converter::playListConverter(vector<uint8_t> data){
+unique_ptr<PlayList> Converter::playListConverter(string str){
     unique_ptr<PlayList> play = make_unique<PlayList>();
-    string str(data.begin(), data.end());
+    //string str(data.begin(), data.end());
     istringstream stream(str);
     string line;
     double tempDur;

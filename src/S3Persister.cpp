@@ -3,19 +3,19 @@
 using namespace Aws;
 using namespace Aws::S3;
 using namespace Aws::S3::Model;
-S3Persister::S3Persister(string n, string r){
+S3Persister::S3Persister(string n, string r, string k, string p){
     this->name = n;
     this->region = r;
-
+    this->key = k;
+    this->path = p;
 }
-void S3Persister::upload(string key, string path){
+void S3Persister::Persist(){
     struct stat buffer;
      if (stat(path.c_str(), &buffer) == -1)
     {
         std::cout << "Error: PutObject: File '" <<
             path << "' does not exist." << std::endl;
 
-        //return false;
     }
 
     Client::ClientConfiguration config;
@@ -37,14 +37,12 @@ void S3Persister::upload(string key, string path){
 
         std::cout << "Added object '" << key << "' to bucket '"
             << this->name << "'.";
-        //return true;
     }
     else 
     {
         std::cout << "Error: PutObject: " << 
             outcome.GetError().GetMessage() << std::endl;
        
-        //return false;
     }
     
 }

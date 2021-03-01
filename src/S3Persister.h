@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+#include "Persister.h"
 #include <aws/core/Aws.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
 #include <aws/s3/S3Client.h>
@@ -13,14 +14,17 @@ using namespace std;
 using namespace Aws;
 using namespace Aws::S3;
 using namespace Aws::S3::Model;
-class S3Persister{
+class S3Persister : public Persister{
     public:
-        S3Persister(string n, string r);
+        S3Persister(string n, string r, string k, string p);
         void upload(string key, string path);
+        void Persist();
 
     private:
         string name;
         string region;
         string bucketName;
+        string key;
+        string path;
 
 };
