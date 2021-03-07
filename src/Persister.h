@@ -4,8 +4,10 @@
 using namespace boost::filesystem;
 
 class Persister{
+    
     public:
         virtual void Persist() = 0;
+
     private:
         path IODirectory;
         MediaFile MFile;

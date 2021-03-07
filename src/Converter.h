@@ -1,14 +1,18 @@
 #ifndef CONVERTER_H
 #define CONVERTER_H
+
 #include <string>
 #include "HLSObjects.h"
 #include <vector>
 #include <memory>
 using namespace std;
+
 class Converter{
+
     public:
         unique_ptr<ChunkList> chunkConverter(string str);
         unique_ptr<PlayList> playListConverter(string str);
+        
     private:
         const string ver = "#EXT-X-VERSION:";
         const string band = "BANDWIDTH";

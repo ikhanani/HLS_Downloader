@@ -3,7 +3,15 @@
     "baseDir" : "/tmp",
     "urls" : ["https://itsvideo.arlingtonva.us:8013/live/cam257.stream/playlist.m3u8", 
         "https://itsvideo.arlingtonva.us:8013/live/cam258.stream/playlist.m3u8", 
-        "https://itsvideo.arlingtonva.us:8013/live/cam259.stream/playlist.m3u8"]
+        "https://itsvideo.arlingtonva.us:8013/live/cam259.stream/playlist.m3u8"],
+    "level" : "INFORMATION",
+    "format" : "%Y-%m-%d %H:%M:%S %s: %t",
+    "rotation" : "2 K",
+    "archive" : "number",
+    "cacheSize" : "100",
+    "enableAWS" : true
+
+    
 
 
 }

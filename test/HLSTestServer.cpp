@@ -18,6 +18,7 @@
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTTPServerParams.h"
 #include "Poco/Net/ServerSocket.h"
+#include "Poco/Net/SocketAddress.h"
 #include "Poco/Timestamp.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
@@ -28,9 +29,11 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 #include <iostream>
-
+#include <thread>
+#include <mutex>
 
 using Poco::Net::ServerSocket;
+using Poco::Net::SocketAddress;
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPRequestHandlerFactory;
 using Poco::Net::HTTPServer;
@@ -67,7 +70,7 @@ public:
 
 		response.setChunkedTransferEncoding(true);
 		response.setContentType("text/html");
-
+		std::cout << request.getURI() << "\n";
 		std::ostream& ostr = response.send();
 		if (request.getURI() == "/step1"){
 			ostr << "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-STREAM-INF:BANDWIDTH=440283,CODECS= avc1.77.20 ,RESOLUTION=352x240\nstep2";
@@ -126,8 +129,11 @@ class HLSTestServer: public Poco::Util::ServerApplication
 	/// To test the TimeServer you can use any web browser (http://localhost:9980/).
 {
 public:
-	HLSTestServer(): _helpRequested(false)
+	HLSTestServer(std::mutex *mu, std::condition_variable *cva, bool *r): _helpRequested(false)
 	{
+		m = mu;
+		cv = cva;
+		ready = r;
 	}
 	
 	~HLSTestServer()
@@ -137,6 +143,8 @@ public:
 protected:
 	void initialize(Application& self)
 	{
+		std::cout << "Initialize" << "\n";
+		std::lock_guard<std::mutex> lg(*m);
 		loadConfiguration(); // load default configuration files, if present
 		ServerApplication::initialize(self);
 	}
@@ -175,12 +183,14 @@ protected:
 
 	int main(const std::vector<std::string>& args)
 	{
+		std::cout << "Server start" << "\n";
 		if (_helpRequested)
 		{
 			displayHelp();
 		}
 		else
 		{
+			std::cout << "main" << "\n";
 			// get parameters from configuration file
 			unsigned short port = (unsigned short) config().getInt("HTTPTimeServer.port", 9980);
 			std::string format(config().getString("HTTPTimeServer.format", DateTimeFormat::SORTABLE_FORMAT));
@@ -192,10 +202,13 @@ protected:
 			pParams->setMaxQueued(maxQueued);
 			pParams->setMaxThreads(maxThreads);
 			
+			SocketAddress sa(SocketAddress::IPv4, "0.0.0.0", 9980);
 			// set-up a server socket
-			ServerSocket svs(port);
+			ServerSocket svs(sa);
 			// set-up a HTTPServer instance
 			HTTPServer srv(new HLSRequestHandlerFactory(format), svs, pParams);
+			*ready = true;
+			cv->notify_all();
 			// start the HTTPServer
 			srv.start();
 			// wait for CTRL-C or kill
@@ -208,6 +221,9 @@ protected:
 	
 private:
 	bool _helpRequested;
+	std::mutex *m;
+	std::condition_variable *cv;
+	bool *ready;
 };
 
 

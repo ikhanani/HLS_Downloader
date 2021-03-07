@@ -3,18 +3,22 @@
 using namespace Aws;
 using namespace Aws::S3;
 using namespace Aws::S3::Model;
+
 S3Persister::S3Persister(string n, string r, string k, string p){
     this->name = n;
     this->region = r;
     this->key = k;
     this->path = p;
 }
+
 void S3Persister::Persist(){
+    Logger& root = Logger::root();
     struct stat buffer;
+
      if (stat(path.c_str(), &buffer) == -1)
     {
-        std::cout << "Error: PutObject: File '" <<
-            path << "' does not exist." << std::endl;
+        root.information("Error: PutObject: File '" +
+            path + "' does not exist." + "\n");
 
     }
 
@@ -33,15 +37,17 @@ void S3Persister::Persist(){
 
     request.SetBody(input_data);
     Aws::S3::Model::PutObjectOutcome outcome = s3_client.PutObject(request);
+
     if (outcome.IsSuccess()) {
 
-        std::cout << "Added object '" << key << "' to bucket '"
-            << this->name << "'.";
+        root.information("Added object '" + key + "' to bucket '"
+            + this->name + "'.");
     }
+    
     else 
     {
-        std::cout << "Error: PutObject: " << 
-            outcome.GetError().GetMessage() << std::endl;
+        root.information("Error: PutObject: " + 
+            string(outcome.GetError().GetMessage()) + "\n");
        
     }
     

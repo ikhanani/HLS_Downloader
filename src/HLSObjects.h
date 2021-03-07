@@ -9,7 +9,9 @@
 using namespace std;
 
 class MediaFile;
+
 class ChunkList{
+
     public:
         int getVersion(){return version;}
         int getBandwidth(){return bandwidth;}
@@ -21,6 +23,7 @@ class ChunkList{
         void setCodecs(string c){codecs = c;}
         void setResolution(string r){resolution = r;}
         void setChunkName(string c){chunkName = c;}
+
     private:
         int version;
         int bandwidth;
@@ -30,6 +33,7 @@ class ChunkList{
 
 };
 class PlayList{
+
     public:
         int getVersion(){return version;}
         bool getAllowCache(){return allowCache;}
@@ -52,6 +56,7 @@ class PlayList{
 
 };
 class MediaFile{
+    
     public:
         double getDuration(){return duration;}
         string getName(){return name;}
