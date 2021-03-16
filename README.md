@@ -59,8 +59,34 @@ Specific camera links can be plugged into the configuration file (explained [bel
 ## Design
 
 ## How To Run the Application
+When you open the Udacity Virtual Machine, the required packages will already be downloaded. However, you will still need to run "make install" in each build directory as shown below. The default configurations have AWS off, but you may enable it if you have your own credentials.
 
+##### Aws build
+![](../HLS_Downloader/HLSGifs/AwsInstall.gif)
+##### Poco Build
+![](../HLS_Downloader/HLSGifs/PocoInstall.gif)
+##### GTeest Build
+![](../HLS_Downloader/HLSGifs/GoogleInstall.gif)
+
+You will now need to open Visual Studio and open the project folder. Open the CMakeLists file and install CMakeTools as the pop up suggests. Configure the project.
+![](../HLS_Downloader/HLSGifs/CMakeTools.gif)
+You will need to select a compiler. Select CLang6.0.1.
+![](../HLS_Downloader/HLSGifs/CLang.gif)
+
+Navigate to the terminal and build the project.
+![](../HLS_Downloader/HLSGifs/CMake.gif)
+![](../HLS_Downloader/HLSGifs/Make.gif)
+
+You can now run the project as shown below:
+![](../HLS_Downloader/HLSGifs/RunMain.gif)
+
+Allow the projct to run as long as you would like. The longer it runs, the more footage it saves.
+
+Under the bin directory you will see a path that leads to the video files.
+![](../HLS_Downloader/HLSGifs/Result.gif)
 ## How To Run the Tests
+You can run the tests by running the HLS_Downloader_test executable. The program creates its own server to run the HTTP tests.
+![](../HLS_Downloader/HLSGifs/Test.gif)
 ## Configuration
 Under the /config directory, there is a file named "config.json". The following variables can be modified depending on how you would like the program to run.
 * enableLocal - Determines whether or not to save media files locally
