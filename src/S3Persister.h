@@ -22,7 +22,7 @@ class S3Persister : public Persister{
     public:
         S3Persister(string n, string r, string k, string p);
         void upload(string key, string path);
-        void Persist();
+        void Persist() override;
 
     private:
         string name;

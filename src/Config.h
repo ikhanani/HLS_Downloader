@@ -1,4 +1,5 @@
 #include <string>
+#include <utility>
 #include <vector>
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/ParseHandler.h"
@@ -21,21 +22,24 @@ namespace hls
     {
 
     public:
-        void read(string str);
-        bool getEnableLocal() { return enableLocal; }
+        void read(const string& str);
+        bool getEnableLocal() const { return enableLocal; }
         string getDir() { return dir; }
         vector<string> getUrls() { return urls; }
         string getLevel(){return level;}
         string getFormat(){return format;}
         string getRotation(){return rotation;}
         string getArchive(){return archive;}
-        int getCacheSize(){return cacheSize;}
-        bool getEnableAWS() { return enableAWS;}
+        int getCacheSize() const{return cacheSize;}
+        bool getEnableAWS() const { return enableAWS;}
+        string getBucketName(){return bucketName;}
+        string getAWSRegion(){return AWSRegion;}
+        int getDelay(){return delay;}
         void setEnableLocal(bool e) { enableLocal = e; }
         void setDir(string d) { dir = d; }
-        bool findBool(Poco::JSON::Object::Ptr object, string key);
-        string findString(Poco::JSON::Object::Ptr object, string key);
-        vector<string> findList(Poco::JSON::Object::Ptr object, string key);
+        static bool findBool(Poco::JSON::Object::Ptr object, const string& key);
+        static string findString(Poco::JSON::Object::Ptr object, const string& key);
+        static vector<string> findList(Poco::JSON::Object::Ptr object, const string& key);
 
     private:
         bool enableLocal;
@@ -47,5 +51,8 @@ namespace hls
         string archive;
         int cacheSize;
         bool enableAWS;
+        string bucketName;
+        string AWSRegion;
+        int delay;
     };
 } // namespace hls

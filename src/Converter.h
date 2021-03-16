@@ -10,8 +10,8 @@ using namespace std;
 class Converter{
 
     public:
-        unique_ptr<ChunkList> chunkConverter(string str);
-        unique_ptr<PlayList> playListConverter(string str);
+        unique_ptr<ChunkList> chunkConverter(const string& str);
+        unique_ptr<PlayList> playListConverter(const string& str);
         
     private:
         const string ver = "#EXT-X-VERSION:";

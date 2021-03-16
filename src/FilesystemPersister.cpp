@@ -1,7 +1,21 @@
 #include "FilesystemPersister.h"
 
+#include <utility>
+
+FilesystemPersister::FilesystemPersister(std::shared_ptr<MediaFile> f, path dir){
+            IODirectory = dir;
+            MFile = std::move(f);
+
+            if(boost::filesystem::exists(IODirectory)){
+
+            }
+
+            else{
+                boost::filesystem::create_directories(IODirectory);
+        }
+        }
 void FilesystemPersister::Persist(){
-    std::ofstream* outfile = new std::ofstream(IODirectory.string() + "/" + MFile->getName(), std::ofstream::binary);
+    auto* outfile = new std::ofstream(IODirectory.string() + "/" + MFile->getName(), std::ofstream::binary);
     output_stream = outfile;
 }
 

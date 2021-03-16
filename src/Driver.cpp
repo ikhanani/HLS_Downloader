@@ -25,7 +25,7 @@ using Poco::Message;
 using Poco::PatternFormatter;
 using Poco::FormattingChannel;
 
-void initLoggers(string level, string format, string rotation, string archive){
+void initLoggers(const string& level, const string& format, const string& rotation, const string& archive){
     AutoPtr<ConsoleChannel> pCons(new ConsoleChannel);
     AutoPtr<FileChannel> pFile(new FileChannel("test.log"));
     pFile->setProperty("rotation", rotation);
@@ -48,39 +48,41 @@ int main(){
     hls::Config configJson;
     configJson.read(json.str());
     VideoCache cache(configJson.getCacheSize());
-    for(int i = 0; i<2; i++){
-    string path;
-    string base; 
-    std::ifstream f("../config/config.json");
-    std::stringstream json;
-    json << f.rdbuf();
-    hls::Config configJson;
-    configJson.read(json.str());
-    initLoggers(configJson.getLevel(), configJson.getFormat(), configJson.getRotation(), configJson.getArchive());
-    Logger& root = Logger::root();
-    root.debug("test");
-    vector<string> urls = configJson.getUrls();
-    string baseDir = configJson.getDir();
-    int index;
-    vector<std::thread> threadVector;
-    Aws::SDKOptions options;
-    Aws::InitAPI(options);
+    std::chrono::milliseconds duration(configJson.getDelay());
+    while(true){
+        string path;
+        string base; 
+        std::ifstream f("../config/config.json");
+        std::stringstream json;
+        json << f.rdbuf();
+        hls::Config configJson;
+        configJson.read(json.str());
+        initLoggers(configJson.getLevel(), configJson.getFormat(), configJson.getRotation(), configJson.getArchive());
+        Logger& root = Logger::root();
+        root.debug("test");
+        vector<string> urls = configJson.getUrls();
+        string baseDir = configJson.getDir();
+        int index;
+        vector<std::thread> threadVector;
+        Aws::SDKOptions options;
+        Aws::InitAPI(options);
 
-    for(int i = 0; i < urls.size(); i++){
-        index = urls.at(i).find_last_of("/");
-        base = urls.at(i).substr(0, index);
-        path = urls.at(i).substr(index + 1);
-        Job j(base, path, baseDir, &cache);
-        thread t(j);
-        threadVector.push_back(std::move(t));
-    }
-
-    for(auto& t : threadVector){
-        if (t.joinable()){
-            t.join();
+        for(auto & url : urls){
+            index = url.find_last_of('/');
+            base = url.substr(0, index);
+            path = url.substr(index + 1);
+            Job j(base, path, baseDir, &cache);
+            thread t(j);
+            threadVector.push_back(std::move(t));
         }
-    }
-    
-    Aws::ShutdownAPI(options);
+
+        for(auto& t : threadVector){
+            if (t.joinable()){
+                t.join();
+            }
+        }
+        
+        Aws::ShutdownAPI(options);
+        std::this_thread::sleep_for(duration);
 }
 }

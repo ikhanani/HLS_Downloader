@@ -2,10 +2,12 @@
 #define HLSOBJECTS_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include <memory>
 #include <sstream>
 #include <boost/filesystem.hpp>
+#include <ctime>
 using namespace std;
 
 class MediaFile;
@@ -13,8 +15,8 @@ class MediaFile;
 class ChunkList{
 
     public:
-        int getVersion(){return version;}
-        int getBandwidth(){return bandwidth;}
+        int getVersion() const{return version;}
+        int getBandwidth() const{return bandwidth;}
         string getCodecs(){return codecs;}
         string getResolution(){return resolution;}
         string getChunkName(){return chunkName;}
@@ -35,16 +37,16 @@ class ChunkList{
 class PlayList{
 
     public:
-        int getVersion(){return version;}
-        bool getAllowCache(){return allowCache;}
-        int getTargetDuration(){return targetDuration;}
-        int getMediaSequence(){return mediaSequence;}
+        int getVersion() const{return version;}
+        bool getAllowCache() const{return allowCache;}
+        int getTargetDuration() const{return targetDuration;}
+        int getMediaSequence() const{return mediaSequence;}
         void setVersion(int v){version = v;}
         void setAllowCache(bool a){allowCache = a;}
         void setTargetDuration(int t){targetDuration = t;}
         void setMediaSequence(int m){mediaSequence = m;}
         vector<shared_ptr<MediaFile>> getFiles(){return files;}
-        void add(shared_ptr<MediaFile> mediaF);
+        void add(const shared_ptr<MediaFile>& mediaF);
        
     private:
         vector<shared_ptr<MediaFile>> files;
@@ -58,13 +60,13 @@ class PlayList{
 class MediaFile{
     
     public:
-        double getDuration(){return duration;}
+        double getDuration() const{return duration;}
         string getName(){return name;}
         string getFullUrl(){return fullUrl;}
         void setDuration(double d){duration = d;}
         void setName(string n){name = n;}
         void setFullUrl(string u){fullUrl = u;}
-        boost::filesystem::path getPath(string s);
+        static boost::filesystem::path getPath(string s, time_t t);
 
     private:
         double duration;

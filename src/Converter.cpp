@@ -4,7 +4,7 @@
 #include <algorithm>
 using namespace std;
 
-unique_ptr<ChunkList> Converter::chunkConverter(string str){
+unique_ptr<ChunkList> Converter::chunkConverter(const string& str){
     unique_ptr<ChunkList> chunk = make_unique<ChunkList>();
     istringstream stream(str);
     string line;
@@ -52,7 +52,7 @@ unique_ptr<ChunkList> Converter::chunkConverter(string str){
 
 }
 
-unique_ptr<PlayList> Converter::playListConverter(string str){
+unique_ptr<PlayList> Converter::playListConverter(const string& str){
 
     unique_ptr<PlayList> play = make_unique<PlayList>();
     istringstream stream(str);

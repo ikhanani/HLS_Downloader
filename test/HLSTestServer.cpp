@@ -1,3 +1,5 @@
+// Server code from https://github.com/pocoproject/poco/tree/3fc3e5f5b8462f7666952b43381383a79b8b5d92/Net/samples/HTTPTimeServer
+
 //
 // HTTPTimeServer.cpp
 //
@@ -8,7 +10,6 @@
 //
 // SPDX-License-Identifier:	BSL-1.0
 //
-
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -31,6 +32,7 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <utility>
 
 using Poco::Net::ServerSocket;
 using Poco::Net::SocketAddress;
@@ -55,12 +57,12 @@ class TimeRequestHandler: public HTTPRequestHandler
 	/// Return a HTML document with the current date and time.
 {
 public:
-	TimeRequestHandler(const std::string& format): 
-		_format(format)
+	explicit TimeRequestHandler(std::string  format):
+		_format(std::move(format))
 	{
 	}
 	
-	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
+	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) override
 	{
 		Application& app = Application::instance();
 		app.logger().information("Request from " + request.clientAddress().toString());

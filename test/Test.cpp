@@ -40,7 +40,7 @@ TEST(PlayTest, play){
 TEST(ConfigTest, config){
 
   hls::Config c;
-  c.read("{ \n \"enableLocal\" : true,\n \"baseDir\" : \"/tmp\",\n \"urls\" : [\"https://itsvideo.arlingtonva.us:8013/live/cam257.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam258.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam259.stream\"],\n \"level\" : \"INFORMATION\",\n\"format\" : \"%Y-%m-%d %H:%M:%S %s: %t\",\n\"rotation\" : \"2 K\",\n\"archive\" : \"number\",\"cacheSize\" : \"100\"\n}");
+  c.read("{ \n \"enableLocal\" : true,\n \"baseDir\" : \"/tmp\",\n \"urls\" : [\"https://itsvideo.arlingtonva.us:8013/live/cam257.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam258.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam259.stream\"],\n \"level\" : \"INFORMATION\",\n\"format\" : \"%Y-%m-%d %H:%M:%S %s: %t\",\n\"rotation\" : \"2 K\",\n\"archive\" : \"number\",\"cacheSize\" : \"100\",\n \"enableAWS\" : true,\n \"bucketName\" : \"hls-dataset\", \n  \"AWSRegion\" : \"us-east-1\"\n}");
   ASSERT_EQ(c.getDir(), "/tmp");
   ASSERT_EQ(c.getEnableLocal(), true);
   ASSERT_EQ(c.getUrls().size(), 3);
@@ -51,8 +51,9 @@ TEST(ConfigTest, config){
 
 TEST(PathTest, path){
   MediaFile f;
-  boost::filesystem::path p = f.getPath("https://itsvideo.arlingtonva.us:8013/live/cam259.stream");
-  ASSERT_EQ(p.string(), "itsvideo.arlingtonva.us:8013/live/cam259.stream");
+  time_t theTime = time(0);
+  boost::filesystem::path p = f.getPath("https://itsvideo.arlingtonva.us:8013/live/cam259.stream", theTime);
+  ASSERT_EQ(p.string(), "itsvideo.arlingtonva.us:8013/live/cam259.stream/2021/3/12");
 }
 
 TEST(FetcherTest, fetch){

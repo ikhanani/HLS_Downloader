@@ -8,7 +8,7 @@ using namespace std;
 
 class VideoCache{
     public:
-        VideoCache(int cs){
+        explicit VideoCache(int cs){
             cacheSize = cs;
         }
         bool checkFile(string url, string hash);
