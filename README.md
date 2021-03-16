@@ -62,31 +62,31 @@ Specific camera links can be plugged into the configuration file (explained [bel
 When you open the Udacity Virtual Machine, the required packages will already be downloaded. However, you will still need to run "make install" in each build directory as shown below. The default configurations have AWS off, but you may enable it if you have your own credentials.
 
 ##### Aws build
-![](../HLS_Downloader/HLSGifs/AwsInstall.gif)
+![](/HLSGifs/AwsInstall.gif)
 ##### Poco Build
-![](../HLS_Downloader/HLSGifs/PocoInstall.gif)
+![](/HLSGifs/PocoInstall.gif)
 ##### GTeest Build
-![](../HLS_Downloader/HLSGifs/GoogleInstall.gif)
+![](/HLSGifs/GoogleInstall.gif)
 
 You will now need to open Visual Studio and open the project folder. Open the CMakeLists file and install CMakeTools as the pop up suggests. Configure the project.
-![](../HLS_Downloader/HLSGifs/CMakeTools.gif)
+![](/HLSGifs/CMakeTools.gif)
 You will need to select a compiler. Select CLang6.0.1.
-![](../HLS_Downloader/HLSGifs/CLang.gif)
+![](/HLSGifs/CLang.gif)
 
 Navigate to the terminal and build the project.
-![](../HLS_Downloader/HLSGifs/CMake.gif)
-![](../HLS_Downloader/HLSGifs/Make.gif)
+![](/HLSGifs/CMake.gif)
+![](/HLSGifs/Make.gif)
 
 You can now run the project as shown below:
-![](../HLS_Downloader/HLSGifs/RunMain.gif)
+![](/HLSGifs/RunMain.gif)
 
 Allow the projct to run as long as you would like. The longer it runs, the more footage it saves.
 
 Under the bin directory you will see a path that leads to the video files.
-![](../HLS_Downloader/HLSGifs/Result.gif)
+![](/HLSGifs/Result.gif)
 ## How To Run the Tests
 You can run the tests by running the HLS_Downloader_test executable. The program creates its own server to run the HTTP tests.
-![](../HLS_Downloader/HLSGifs/Test.gif)
+![](/HLSGifs/Test.gif)
 ## Configuration
 Under the /config directory, there is a file named "config.json". The following variables can be modified depending on how you would like the program to run.
 * enableLocal - Determines whether or not to save media files locally
@@ -105,12 +105,12 @@ Under the /config directory, there is a file named "config.json". The following 
                               
 |Criteria| File(s)| Line|
 |--------|-----|-----|
-|"The project uses Object Oriented Programming techniques."|  HLSObjects.h, VideoFetcher.cpp| All|
-|"Classes use appropriate access specifiers for class members."| HLSObjects.h, Converter.h, FilesystemPersister.h, Job.h| All|
-|"The project reads data from a file and process the data, or the program writes data to a file."| VideoFetcher.cpp| 24|
-|"Derived class functions override virtual base class functions." | FilesystemPersister.cpp| 7|
-|"The project uses smart pointers instead of raw pointers."| Job.cpp |19
-|"The project uses multithreading."| Driver.cpp| 74
-|"A mutex or lock is used in the project."| Test.cpp| 93|
-|"The project makes use of references in function declarations."| HLSObjects.cpp, VideoFetcher.cpp| 4, 24|
-|"A condition variable is used in the project."|Test.cpp| 85|
+|"The project uses Object Oriented Programming techniques."|  ![HLSObjects.h](src/HLSObjects.h), ![VideoFetcher.cpp](src/VideoFetcher.cpp)| All|
+|"Classes use appropriate access specifiers for class members."| ![HLSObjects.h](src/HLSObjects.h), ![Converter.h](src/Converter.h), ![FilesystemPersister.h](src/FilesystemPersister.h), ![Job.h](src/Job.h)| All|
+|"The project reads data from a file and process the data, or the program writes data to a file."| ![VideoFetcher.cpp](src/VideoFetcher.cpp#L24)| 24|
+|"Derived class functions override virtual base class functions." | ![FilesystemPersister.cpp](src/FilesystemPersister.cpp#L7)| 7|
+|"The project uses smart pointers instead of raw pointers."| ![Job.cpp](src/Job.cpp#L19) |19
+|"The project uses multithreading."| ![Driver.cpp](src/Driver.cpp#L74)| 74
+|"A mutex or lock is used in the project."| ![Test.cpp](test/Test.cpp#L93)| 93|
+|"The project makes use of references in function declarations."| ![HLSObjects.cpp](src/HLSObjects.cpp#L4), ![VideoFetcher.cpp](src/VideoFetcher.cpp#L24)| 4, 24|
+|"A condition variable is used in the project."|![Test.cpp](test/Test.cpp)| 85|
