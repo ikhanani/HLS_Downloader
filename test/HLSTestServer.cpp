@@ -33,6 +33,7 @@
 #include <thread>
 #include <mutex>
 #include <utility>
+#include <condition_variable>
 
 using Poco::Net::ServerSocket;
 using Poco::Net::SocketAddress;

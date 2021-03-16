@@ -9,6 +9,7 @@
 #include <vector>
 #include "../src/Config.h"
 #include "../src/VideoCache.h"
+#include <condition_variable>
 
 TEST(ChunkTest, chunk){
     string content = "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-STREAM-INF:BANDWIDTH=440283,CODECS= avc1.77.20 ,RESOLUTION=352x240\nchunklist_w1215933555.m3u8";
@@ -40,7 +41,7 @@ TEST(PlayTest, play){
 TEST(ConfigTest, config){
 
   hls::Config c;
-  c.read("{ \n \"enableLocal\" : true,\n \"baseDir\" : \"/tmp\",\n \"urls\" : [\"https://itsvideo.arlingtonva.us:8013/live/cam257.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam258.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam259.stream\"],\n \"level\" : \"INFORMATION\",\n\"format\" : \"%Y-%m-%d %H:%M:%S %s: %t\",\n\"rotation\" : \"2 K\",\n\"archive\" : \"number\",\"cacheSize\" : \"100\",\n \"enableAWS\" : true,\n \"bucketName\" : \"hls-dataset\", \n  \"AWSRegion\" : \"us-east-1\"\n}");
+  c.read("{ \n \"enableLocal\" : true,\n \"baseDir\" : \"/tmp\",\n \"urls\" : [\"https://itsvideo.arlingtonva.us:8013/live/cam257.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam258.stream\", \"https://itsvideo.arlingtonva.us:8013/live/cam259.stream\"],\n \"level\" : \"INFORMATION\",\n\"format\" : \"%Y-%m-%d %H:%M:%S %s: %t\",\n\"rotation\" : \"2 K\",\n\"archive\" : \"number\",\"cacheSize\" : \"100\",\n \"enableAws\" : true,\n \"bucketName\" : \"hls-dataset\", \n  \"AwsRegion\" : \"us-east-1\", \n \"delay\" : 1000\n}");
   ASSERT_EQ(c.getDir(), "/tmp");
   ASSERT_EQ(c.getEnableLocal(), true);
   ASSERT_EQ(c.getUrls().size(), 3);
@@ -53,7 +54,8 @@ TEST(PathTest, path){
   MediaFile f;
   time_t theTime = time(0);
   boost::filesystem::path p = f.getPath("https://itsvideo.arlingtonva.us:8013/live/cam259.stream", theTime);
-  ASSERT_EQ(p.string(), "itsvideo.arlingtonva.us:8013/live/cam259.stream/2021/3/12");
+  struct tm *aTime = localtime(&theTime);
+  ASSERT_EQ(p.string(), "itsvideo.arlingtonva.us:8013/live/cam259.stream/" + std::to_string(aTime->tm_year + 1900) + "/" + std::to_string(aTime->tm_mon + 1) + "/" + std::to_string(aTime->tm_mday));
 }
 
 TEST(FetcherTest, fetch){
