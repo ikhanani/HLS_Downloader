@@ -6,14 +6,15 @@ using Poco::Logger;
 using Poco::Message;
 using namespace std;
 
-class VideoCache{
-    public:
-        explicit VideoCache(int cs){
-            cacheSize = cs;
-        }
-        bool checkFile(string url, string hash);
+class VideoCache {
+public:
+    explicit VideoCache(int cs) {
+        cacheSize = cs;
+    }
 
-    private:
-        unordered_map<string, std::unique_ptr<Poco::LRUCache<std::string, int>>> urlMap;
-        int cacheSize;
+    bool checkFile(string url, string hash);
+
+private:
+    unordered_map<string, std::unique_ptr<Poco::LRUCache<std::string, int>>> urlMap;
+    int cacheSize;
 };

@@ -8,5 +8,5 @@ file(GLOB SOURCES *.h *.cpp)
 add_executable(${BINARY} ${SOURCES})
 
 #add_test(NAME ${BINARY} COMMAND ${BINARY})
-target_link_libraries(${BINARY} PUBLIC Poco::Net Poco::Util Poco::JSON  HLS_Downloader_LIB ${GTEST_LIBRARIES})
+target_link_libraries(${BINARY} PUBLIC Poco::Net Poco::Util Poco::JSON HLS_Downloader_LIB ${GTEST_LIBRARIES})
 

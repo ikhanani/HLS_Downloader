@@ -1,24 +1,24 @@
 #include "S3Persister.h"
 #include <sys/stat.h>
+
 using namespace Aws;
 using namespace Aws::S3;
 using namespace Aws::S3::Model;
 
-S3Persister::S3Persister(string n, string r, string k, string p){
+S3Persister::S3Persister(string n, string r, string k, string p) {
     this->name = n;
     this->region = r;
     this->key = k;
     this->path = p;
 }
 
-void S3Persister::Persist(){
-    Logger& root = Logger::root();
+void S3Persister::Persist() {
+    Logger &root = Logger::root();
     struct stat buffer;
 
-     if (stat(path.c_str(), &buffer) == -1)
-    {
+    if (stat(path.c_str(), &buffer) == -1) {
         root.information("Error: PutObject: File '" +
-            path + "' does not exist." + "\n");
+                         path + "' does not exist." + "\n");
 
     }
 
@@ -30,10 +30,10 @@ void S3Persister::Persist(){
     Aws::String awsPath(path.c_str(), path.size());
     request.SetBucket(bucket);
     request.SetKey(awsPath);
-    std::shared_ptr<Aws::IOStream> input_data = 
-        Aws::MakeShared<Aws::FStream>("SampleAllocationTag", 
-            awsPath.c_str(), 
-            std::ios_base::in | std::ios_base::binary);
+    std::shared_ptr<Aws::IOStream> input_data =
+            Aws::MakeShared<Aws::FStream>("SampleAllocationTag",
+                                          awsPath.c_str(),
+                                          std::ios_base::in | std::ios_base::binary);
 
     request.SetBody(input_data);
     Aws::S3::Model::PutObjectOutcome outcome = s3_client.PutObject(request);
@@ -41,14 +41,11 @@ void S3Persister::Persist(){
     if (outcome.IsSuccess()) {
 
         root.information("Added object '" + key + "' to bucket '"
-            + this->name + "'.");
+                         + this->name + "'.");
+    } else {
+        root.information("Error: PutObject: " +
+                         string(outcome.GetError().GetMessage()) + "\n");
+
     }
-    
-    else 
-    {
-        root.information("Error: PutObject: " + 
-            string(outcome.GetError().GetMessage()) + "\n");
-       
-    }
-    
+
 }

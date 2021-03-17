@@ -3,6 +3,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <gtest/gtest.h>
+
 using namespace boost::uuids;
 
 /**TEST(S3Test, putObjectTest){

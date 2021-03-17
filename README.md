@@ -17,46 +17,49 @@ Specific camera links can be plugged into the configuration file (explained [bel
 | I-95 / MM 138.6 / SB |https://s16.us-east-1.skyvdn.com/rtplive/FairfaxVideo2065/playlist.m3u8 |
 | US-250 / WB / SR-20 / Charlottesville | https://s11.us-east-1.skyvdn.com/rtplive/StauntonCCTV250PAMTOPE/playlist.m3u8 |
 
-[Maryland Department of Transportation](https://chart.maryland.gov/map/default.asp)
-| Camera Location | URL |
-| ----------- | ----------- |
-| Paint Branch Pkwy at MFRI |https://strmr10.sha.maryland.gov/rtplive/c5ff65d2008900a1004f823633235daa/playlist.m3u8|
-| RWIS I-95 AT PATUXENT RIVER | https://strmr3.sha.maryland.gov/rtplive/0301bd3e006700d40050fa36c4235c0a/playlist.m3u8 |
 ## Dependencies:
 * AWSSDK
-    * Clone repository with git: 
+    Provides an API to access Amazon Web Services Simple Storage Service (S3)
+
     ```
     git clone https://github.com/aws/aws-sdk-cpp.git
     mkdir sdk_build
-    sudo cmake -DCMAKE_BUILD_TYPE=[Release] -DBUILD_ONLY="s3"
+    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3"
     make install
     ```
 * Poco 
-    * Clone repository with git: 
+    This library provides HTTP, logging, and JSON parsing support required by HLS Downloader
+
     ```
-    $ git clone -b master https://github.com/pocoproject/poco.git
+    $ git clone https://github.com/pocoproject/poco.git
     $ cd poco
     $ mkdir cmake-build
     $ cd cmake-build
     $ cmake ..
-    $ sudo cmake --build . --target install
+    $ make install
     ```
 
 * OpenSSL
-* Boost
+    Library required by Poco for HTTP support.
+    * Follow instructions here https://github.com/openssl/openssl
+* Boost 
+    The boost::filesystem library is used for various I/O operations.
     * Download from https://www.boost.org/
 * GTest
-    * Clone repository with git:
+    Provides testing framework.
+    
     ```
-    git clone https://github.com/google/googletest.git -b release-1.10.0
-    cd googletest        # Main directory of the cloned repository.
-    mkdir build          # Create a directory to hold the build output.
+    git clone https://github.com/google/googletest.git
+    cd googletest        
+    mkdir build          
     cd build
-    cmake ..             # Generate native build scripts for GoogleTest.
+    cmake ..             
     make
-    sudo make install    # Install in /usr/local/ by default
+    sudo make install    
     ```
 ## Design
+
+The program should output 
 
 ## How To Run the Application
 When you open the Udacity Virtual Machine, the required packages will already be downloaded. However, you will still need to run "make install" in each build directory as shown below. The default configurations have AWS off, but you may enable it if you have your own credentials.

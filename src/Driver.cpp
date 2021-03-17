@@ -25,7 +25,7 @@ using Poco::Message;
 using Poco::PatternFormatter;
 using Poco::FormattingChannel;
 
-void initLoggers(const string& level, const string& format, const string& rotation, const string& archive){
+void initLoggers(const string &level, const string &format, const string &rotation, const string &archive) {
     AutoPtr<ConsoleChannel> pCons(new ConsoleChannel);
     AutoPtr<FileChannel> pFile(new FileChannel("test.log"));
     pFile->setProperty("rotation", rotation);
@@ -41,7 +41,8 @@ void initLoggers(const string& level, const string& format, const string& rotati
     Logger::root().setLevel(level);
 
 }
-int main(){
+
+int main() {
     std::ifstream f("../config/config.json");
     std::stringstream json;
     json << f.rdbuf();
@@ -49,16 +50,16 @@ int main(){
     configJson.read(json.str());
     VideoCache cache(configJson.getCacheSize());
     std::chrono::milliseconds duration(configJson.getDelay());
-    while(true){
+    while (true) {
         string path;
-        string base; 
+        string base;
         std::ifstream f("../config/config.json");
         std::stringstream json;
         json << f.rdbuf();
         hls::Config configJson;
         configJson.read(json.str());
         initLoggers(configJson.getLevel(), configJson.getFormat(), configJson.getRotation(), configJson.getArchive());
-        Logger& root = Logger::root();
+        Logger &root = Logger::root();
         root.debug("test");
         vector<string> urls = configJson.getUrls();
         string baseDir = configJson.getDir();
@@ -67,7 +68,7 @@ int main(){
         Aws::SDKOptions options;
         Aws::InitAPI(options);
 
-        for(auto & url : urls){
+        for (auto &url : urls) {
             index = url.find_last_of('/');
             base = url.substr(0, index);
             path = url.substr(index + 1);
@@ -76,13 +77,13 @@ int main(){
             threadVector.push_back(std::move(t));
         }
 
-        for(auto& t : threadVector){
-            if (t.joinable()){
+        for (auto &t : threadVector) {
+            if (t.joinable()) {
                 t.join();
             }
         }
-        
+
         Aws::ShutdownAPI(options);
         std::this_thread::sleep_for(duration);
-}
+    }
 }

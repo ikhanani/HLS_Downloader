@@ -1,14 +1,12 @@
 #include "VideoFetcher.h"
 #include <iostream>
 
-VideoFetcher::VideoFetcher(string baseUrl, string playListPath)
-{
+VideoFetcher::VideoFetcher(string baseUrl, string playListPath) {
     this->baseUrl = baseUrl;
     this->playListPath = playListPath;
 }
 
-unique_ptr<PlayList> VideoFetcher::fetchPlayList()
-{
+unique_ptr<PlayList> VideoFetcher::fetchPlayList() {
 
     ostringstream out;
     VideoFetcher fetcher = VideoFetcher(baseUrl, playListPath);
@@ -21,10 +19,9 @@ unique_ptr<PlayList> VideoFetcher::fetchPlayList()
     return play;
 }
 
-string VideoFetcher::fetch(std::ostream &outputStream, string targetUrl)
-{
+string VideoFetcher::fetch(std::ostream &outputStream, string targetUrl) {
 
-    Logger& root = Logger::root();
+    Logger &root = Logger::root();
     MD5Engine md5;
     DigestOutputStream ostr(md5);
     TeeOutputStream a(ostr);
@@ -33,14 +30,10 @@ string VideoFetcher::fetch(std::ostream &outputStream, string targetUrl)
     HTTPClientSession *session;
     a.addStream(outputStream);
 
-    if (targetUrl.find("https") != -1)
-    {
+    if (targetUrl.find("https") != -1) {
         session = new HTTPSClientSession(uri.getHost(), uri.getPort());
         //HTTPSClientSession session(uri.getHost(), uri.getPort());
-    }
-
-    else
-    {
+    } else {
         session = new HTTPClientSession(uri.getHost(), uri.getPort());
     }
 

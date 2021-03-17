@@ -33,13 +33,15 @@ using Poco::URI;
 using Poco::Exception;
 using namespace std;
 
-class VideoFetcher{
-    public:
-        VideoFetcher(string baseUrl, string playListPath);
-        string fetch(std::ostream &outputStream, string targetUrl);
-        unique_ptr<PlayList> fetchPlayList();
+class VideoFetcher {
+public:
+    VideoFetcher(string baseUrl, string playListPath);
 
-    private:
-        string baseUrl;
-        string playListPath;
+    string fetch(std::ostream &outputStream, string targetUrl);
+
+    unique_ptr<PlayList> fetchPlayList();
+
+private:
+    string baseUrl;
+    string playListPath;
 };
