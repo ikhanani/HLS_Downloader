@@ -109,13 +109,13 @@ make
 ![](/HLSGifs/Make.gif)
 
 
-You can now run the project as shown below:
+You can now run the project as shown below. The only argument the program takes is the path to the configuration file. A default file is provided at `"../config/config.json"`:
 From home/workspace/HLS_Downloader/build:
 ![](/HLSGifs/RunMain.gif)
 ```
 cd ../
 cd bin
-./HLS_Downloader
+./HLS_Downloader ../config/config.json
 ```
 
 Allow the projct to run as long as you would like. The longer it runs, the more footage it saves.
@@ -152,3 +152,10 @@ Under the /config directory, there is a file named "config.json". The following 
 |"A mutex or lock is used in the project."| ![Test.cpp](test/Test.cpp#L93)| 93|
 |"The project makes use of references in function declarations."| ![HLSObjects.cpp](src/HLSObjects.cpp#L4), ![VideoFetcher.cpp](src/VideoFetcher.cpp#L24)| 4, 24|
 |"A condition variable is used in the project."|![Test.cpp](test/Test.cpp)| 85|
+
+## Memory Leak Analysis
+
+The program was confirmed to be free from memory leaks by the Leaks tool available on MacOS through XCode as shown in the following image.
+
+![](HLSGifs/Memory.png)
+
