@@ -139,32 +139,6 @@ public:
     }
 
 protected:
-    void initialize(Application &self) {
-        std::cout << "Initialize" << "\n";
-        std::lock_guard<std::mutex> lg(*m);
-        loadConfiguration(); // load default configuration files, if present
-        ServerApplication::initialize(self);
-    }
-
-    void uninitialize() {
-        ServerApplication::uninitialize();
-    }
-
-    void defineOptions(OptionSet &options) {
-        ServerApplication::defineOptions(options);
-
-        options.addOption(
-                Option("help", "h", "display help information on command line arguments")
-                        .required(false)
-                        .repeatable(false));
-    }
-
-    void handleOption(const std::string &name, const std::string &value) {
-        ServerApplication::handleOption(name, value);
-
-        if (name == "help")
-            _helpRequested = true;
-    }
 
     void displayHelp() {
         HelpFormatter helpFormatter(options());

@@ -5,15 +5,17 @@
 #include "FilesystemPersister.h"
 #include "S3Persister.h"
 #include "VideoCache.h"
+#include "Config.h"
 
 class Job {
 
 public:
-    Job(string b, string p, string bd, VideoCache *c) {
+    Job(string b, string p, string bd, VideoCache *c, hls::Config config) {
         base = b;
         path = p;
         baseDir = bd;
         cache = c;
+        configJson = config;
     }
 
     void operator()();
@@ -23,4 +25,5 @@ private:
     string path;
     string baseDir;
     VideoCache *cache;
+    hls::Config configJson;
 };

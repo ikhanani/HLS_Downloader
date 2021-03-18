@@ -26,6 +26,8 @@ public:
 
     void Persist() override;
 
+    void Delete(string s) override;
+
 private:
     string name;
     string region;

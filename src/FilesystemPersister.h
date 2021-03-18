@@ -8,14 +8,16 @@ class FilesystemPersister : public Persister {
 public:
     FilesystemPersister(std::shared_ptr<MediaFile> f, path dir);
 
-    std::ostream *getOStream();
+    std::shared_ptr<std::ostream> getOStream();
 
     void Persist() override;
 
     string getFullPath();
 
+    void Delete(string s) override;
+
 private:
-    std::ostream *output_stream;
+    std::shared_ptr<std::ostream> output_stream;
     path IODirectory;
     std::shared_ptr<MediaFile> MFile;
 };

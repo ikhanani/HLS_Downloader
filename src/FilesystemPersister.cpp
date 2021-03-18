@@ -14,14 +14,17 @@ FilesystemPersister::FilesystemPersister(std::shared_ptr<MediaFile> f, path dir)
 }
 
 void FilesystemPersister::Persist() {
-    auto *outfile = new std::ofstream(IODirectory.string() + "/" + MFile->getName(), std::ofstream::binary);
-    output_stream = outfile;
+    output_stream = make_shared<std::ofstream>(IODirectory.string() + "/" + MFile->getName(), std::ofstream::binary);
 }
 
-std::ostream *FilesystemPersister::getOStream() {
+std::shared_ptr<std::ostream> FilesystemPersister::getOStream() {
     return output_stream;
 }
 
 string FilesystemPersister::getFullPath() {
     return IODirectory.string() + "/" + MFile->getName();
+}
+
+void FilesystemPersister::Delete(string s){
+    boost::filesystem::remove(s);
 }

@@ -58,30 +58,65 @@ Specific camera links can be plugged into the configuration file (explained [bel
     sudo make install    
     ```
 ## Design
+The following sequence diagram illustrates how the Driver class interacts with other classes to iterate over all camera URLs specified in the `config.json` file.
 
-The program should output 
+![](/HLSGifs/HLSDesign.png)
+
+When the application is run, with `enableLocal` set to `true`, the following directory structure will be created for the specified configuration.
+
+The top level directory labeled `"1"` corresponds to the portion of the url labeled `"A"` in the illustrated configuration file. Similarly, the directory labeled `"2"` corresponds to the name of the camera, labeled `"B"`.
+![](HLSGifs/Tree.png)
 
 ## How To Run the Application
 When you open the Udacity Virtual Machine, the required packages will already be downloaded. However, you will still need to run "make install" in each build directory as shown below. The default configurations have AWS off, but you may enable it if you have your own credentials.
 
 ##### Aws build
+From home/workspace:
+```
+cd aws-sdk-cpp
+cd build
+make install
+```
 ![](/HLSGifs/AwsInstall.gif)
+
 ##### Poco Build
+From home/workspace:
+
+```
+cd poco
+cd cmake-build
+make install
+```
 ![](/HLSGifs/PocoInstall.gif)
+
 ##### GTeest Build
 ![](/HLSGifs/GoogleInstall.gif)
-
-You will now need to open Visual Studio and open the project folder. Open the CMakeLists file and install CMakeTools as the pop up suggests. Configure the project.
-![](/HLSGifs/CMakeTools.gif)
-You will need to select a compiler. Select CLang6.0.1.
-![](/HLSGifs/CLang.gif)
+From home/workspace:
+```
+cd googletest
+cd build
+make install
+```
 
 Navigate to the terminal and build the project.
+From home/workspace/HLS_Downloader:
+```
+cd build
+cmake ..
+make
+```
 ![](/HLSGifs/CMake.gif)
 ![](/HLSGifs/Make.gif)
 
+
 You can now run the project as shown below:
+From home/workspace/HLS_Downloader/build:
 ![](/HLSGifs/RunMain.gif)
+```
+cd ../
+cd bin
+./HLS_Downloader
+```
 
 Allow the projct to run as long as you would like. The longer it runs, the more footage it saves.
 

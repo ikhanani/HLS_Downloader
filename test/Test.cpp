@@ -48,6 +48,16 @@ TEST(ConfigTest, config) {
     ASSERT_EQ(c.getUrls().at(0), "https://itsvideo.arlingtonva.us:8013/live/cam257.stream");
     ASSERT_EQ(c.getUrls().at(1), "https://itsvideo.arlingtonva.us:8013/live/cam258.stream");
     ASSERT_EQ(c.getUrls().at(2), "https://itsvideo.arlingtonva.us:8013/live/cam259.stream");
+    ASSERT_EQ(c.getLevel(), "INFORMATION");
+    ASSERT_EQ(c.getFormat(), "%Y-%m-%d %H:%M:%S %s: %t");
+    ASSERT_EQ(c.getRotation(), "2 K");
+    ASSERT_EQ(c.getArchive(), "number");
+    ASSERT_EQ(c.getCacheSize(), 100);
+    ASSERT_EQ(c.getEnableAWS(), true);
+    ASSERT_EQ(c.getBucketName(), "hls-dataset");
+    ASSERT_EQ(c.getAWSRegion(), "us-east-1");
+    ASSERT_EQ(c.getDelay(), 1000);
+
 }
 
 TEST(PathTest, path) {
@@ -66,6 +76,9 @@ TEST(FetcherTest, fetch) {
     ASSERT_EQ(play->getFiles().size(), 2);
     ASSERT_EQ(play->getFiles().at(0)->getName(), "file1");
     ASSERT_EQ(play->getFiles().at(1)->getName(), "file2");
+    std::ostringstream outputStream1;
+    fetcher.fetch(outputStream1,"http://127.0.0.1:9980" + string("/") + play->getFiles().at(1)->getName());
+    ASSERT_EQ(outputStream1.str(), "This is file 2");
 
 }
 

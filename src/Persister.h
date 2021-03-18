@@ -9,6 +9,7 @@ class Persister {
 
 public:
     virtual void Persist() = 0;
+    virtual void Delete(string s) = 0;
 
 private:
     path IODirectory;

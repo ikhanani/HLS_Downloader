@@ -49,3 +49,7 @@ void S3Persister::Persist() {
     }
 
 }
+
+void S3Persister::Delete(string s){
+    //Not currently needed in project
+}

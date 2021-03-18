@@ -1,5 +1,4 @@
 #include "Converter.h"
-#include "Config.h"
 #include "Job.h"
 #include <fstream>
 #include <boost/uuid/uuid.hpp>
@@ -13,6 +12,8 @@
 #include "Poco/AutoPtr.h"
 #include "Poco/PatternFormatter.h"
 #include "Poco/FormattingChannel.h"
+#include <cstdint>
+#include <experimental/filesystem>
 
 using namespace std;
 using namespace boost::uuids;
@@ -42,8 +43,20 @@ void initLoggers(const string &level, const string &format, const string &rotati
 
 }
 
-int main() {
-    std::ifstream f("../config/config.json");
+int main(int argc, char *argv[]) {
+
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " ConfigFile" << std::endl;
+        return 1;
+    }
+
+    string configFile = argv[1];
+
+    if (!boost::filesystem::exists(boost::filesystem::path(configFile))) {
+        std::cerr << "ConfigFile" << configFile << " not found." << std::endl;
+        return 1;
+    }
+    std::ifstream f(configFile);
     std::stringstream json;
     json << f.rdbuf();
     hls::Config configJson;
@@ -53,11 +66,6 @@ int main() {
     while (true) {
         string path;
         string base;
-        std::ifstream f("../config/config.json");
-        std::stringstream json;
-        json << f.rdbuf();
-        hls::Config configJson;
-        configJson.read(json.str());
         initLoggers(configJson.getLevel(), configJson.getFormat(), configJson.getRotation(), configJson.getArchive());
         Logger &root = Logger::root();
         root.debug("test");
@@ -72,7 +80,7 @@ int main() {
             index = url.find_last_of('/');
             base = url.substr(0, index);
             path = url.substr(index + 1);
-            Job j(base, path, baseDir, &cache);
+            Job j(base, path, baseDir, &cache, configJson);
             thread t(j);
             threadVector.push_back(std::move(t));
         }
