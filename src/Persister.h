@@ -1,13 +1,19 @@
 #ifndef PERSISTER_H
 #define PERSISTER_H
+
 #include "HLSObjects.h"
+
 using namespace boost::filesystem;
 
-class Persister{
-    public:
-        virtual void Persist() = 0;
-    private:
-        path IODirectory;
-        MediaFile MFile;
+class Persister {
+
+public:
+    virtual void Persist() = 0;
+    virtual void Delete(string s) = 0;
+
+private:
+    path IODirectory;
+    MediaFile MFile;
 };
+
 #endif
